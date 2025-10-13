@@ -7,3 +7,9 @@ The back-end project is focused on creating a server for the WTWR application. Y
 
 ### Testing
 Before committing your code, make sure you edit the file `sprint.txt` in the root folder. The file `sprint.txt` should contain the number of the sprint you're currently working on. For ex. 12
+
+#### Project
+This project is used to create a back-end for the What to Wear app that we are developing to provide a server and authentication to the app.
+
+#### Technologies
+The technologies used to develop this project are: Express, Mongoose, Validator, ESLint, Nodemon.
