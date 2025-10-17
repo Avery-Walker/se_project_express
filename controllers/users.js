@@ -10,7 +10,7 @@ const getUsers = (req, res) => {
     .then((users) => res.status(200).send(users))
     .catch((err) => {
       console.error(err);
-      res
+      return res
         .status(INTERNAL_SERVER_ERROR)
         .send({ message: "An error has occurred on the server" });
     });
@@ -28,11 +28,13 @@ const getUser = (req, res) => {
         return res
           .status(BAD_REQUEST)
           .send({ message: "Invalid user ID format" });
-      } else if (err.name === "DocumentNotFoundError") {
+      }
+
+      if (err.name === "DocumentNotFoundError") {
         return res.status(NOT_FOUND).send({ message: "User not found" });
       }
 
-      res
+      return res
         .status(INTERNAL_SERVER_ERROR)
         .send({ message: "An error has occurred on the server" });
     });
@@ -51,7 +53,7 @@ const createUser = (req, res) => {
           .send({ message: "Invalid data passed when creating a user" });
       }
 
-      res
+      return res
         .status(INTERNAL_SERVER_ERROR)
         .send({ message: "An error has occurred on the server" });
     });
