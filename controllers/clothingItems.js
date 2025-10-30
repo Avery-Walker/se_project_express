@@ -37,13 +37,21 @@ const createItem = (req, res) => {
 
 const deleteItem = (req, res) => {
   const { itemId } = req.params;
+  const currentUserId = req.user._id;
+
   ClothingItem.findById(itemId)
     .orFail()
-    .then((item) =>
-      item
+    .then((item) => {
+      if (item.owner.toString() !== currentUserId) {
+        return res
+          .status(FORBIDDEN)
+          .send({ message: "You cannot delete items you don't own" });
+      }
+
+      return item
         .deleteOne()
-        .then(() => res.status(200).send({ message: "Item deleted" }))
-    )
+        .then(() => res.status(200).send({ message: "Item deleted" }));
+    })
     .catch((err) => {
       console.error(err.name, err.message);
 
