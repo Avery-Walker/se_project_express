@@ -7,9 +7,10 @@ const auth = require("./middlewares/auth");
 const { NOT_FOUND, INTERNAL_SERVER_ERROR } = require("./utils/errors");
 const cors = require("cors");
 
+const app = express();
+
 app.use(cors());
 
-const app = express();
 const { PORT = 3001 } = process.env;
 mongoose
   .connect("mongodb://127.0.0.1:27017/wtwr_db")
