@@ -28,15 +28,14 @@ const userSchema = new mongoose.Schema({
   password: {
     type: String,
     required: true,
-    minlength: 8,
     select: false,
   },
 });
 
-userSchema.pre("save", async function (next) {
+userSchema.pre("save", async function hashPassword(next) {
   if (!this.isModified("password")) return next();
   this.password = await bcrypt.hash(this.password, 10);
-  next();
+  return next();
 });
 
 userSchema.statics.findUserByCredentials = function (email, password) {
@@ -54,7 +53,8 @@ userSchema.statics.findUserByCredentials = function (email, password) {
 
         return user;
       });
-    });
+    })
+    .catch(() => Promise.reject(new Error("Incorrect email or password")));
 };
 
 module.exports = mongoose.model("user", userSchema);

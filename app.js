@@ -1,11 +1,9 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const cors = require("cors");
 const mainRouter = require("./routes/index");
 const { login, createUser } = require("./controllers/users");
-const { getItems } = require("./controllers/clothingItems");
-const auth = require("./middlewares/auth");
 const { NOT_FOUND, INTERNAL_SERVER_ERROR } = require("./utils/errors");
-const cors = require("cors");
 
 const app = express();
 
@@ -27,16 +25,14 @@ app.use(express.json());
 
 app.post("/signup", createUser);
 app.post("/signin", login);
-app.get("/items", getItems);
 
-app.use(auth);
 app.use("/", mainRouter);
 
 app.use((req, res) => {
   res.status(NOT_FOUND).send({ message: "Requested resource not found" });
 });
 
-app.use((err, req, res, next) => {
+app.use((err, req, res) => {
   // eslint-disable-next-line no-console
   console.error("Unhandled Error:", err);
 
