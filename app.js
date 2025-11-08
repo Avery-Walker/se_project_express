@@ -28,10 +28,6 @@ app.post("/signin", login);
 
 app.use("/", mainRouter);
 
-app.use((req, res) => {
-  res.status(NOT_FOUND).send({ message: "Requested resource not found" });
-});
-
 app.use((err, req, res) => {
   // eslint-disable-next-line no-console
   console.error("Unhandled Error:", err);

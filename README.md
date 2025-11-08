@@ -10,7 +10,7 @@ The back-end project is focused on creating a server for the WTWR application. Y
 
 ## Project Pitch Video
 
-Check out [this video](https://drive.google.com/file/d/18mxSWqjwwhIRzNIK1aQddvIpiRA5uhUp/view?usp=sharing), where I describe my
+Check out [this video](https://drive.google.com/file/d/1L_-qKq0_Pp-ShPJBrDDtmE8OYIwdG6lE/view?usp=sharing), where I describe my
 project and some challenges I faced while building it.
 
 ### Testing
