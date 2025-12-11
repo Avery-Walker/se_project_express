@@ -1,47 +1,38 @@
+require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
+const helmet = require("helmet");
 const cors = require("cors");
-const mainRouter = require("./routes/index");
-const { login, createUser } = require("./controllers/users");
-const { NOT_FOUND, INTERNAL_SERVER_ERROR } = require("./utils/errors");
+const { errors } = require("celebrate");
+
+const routes = require("./routes");
+const errorHandler = require("./middlewares/errorHandler");
+
+const { requestLogger, errorLogger } = require("./middlewares/logger");
 
 const app = express();
-
+app.use(express.json());
+app.use(helmet());
 app.use(cors());
 
+app.use(requestLogger);
+
+app.use(routes);
+
+app.use(errorLogger);
+
+app.use(errors());
+
+app.use(errorHandler);
+
 const { PORT = 3001 } = process.env;
+
 mongoose
   .connect("mongodb://127.0.0.1:27017/wtwr_db")
   .then(() => {
-    // eslint-disable-next-line no-console
-    console.log("Connected to DB");
+    console.log("Connected to MongoDB");
+    app.listen(PORT, () => {
+      console.log(`Server is running on port ${PORT}`);
+    });
   })
-  .catch((err) => {
-    // eslint-disable-next-line no-console
-    console.error("MongoDB connection error:", err);
-  });
-
-app.use(express.json());
-
-app.post("/signup", createUser);
-app.post("/signin", login);
-
-app.use("/", mainRouter);
-
-app.use((err, req, res) => {
-  // eslint-disable-next-line no-console
-  console.error("Unhandled Error:", err);
-
-  const { statusCode = INTERNAL_SERVER_ERROR, message } = err;
-  res.status(statusCode).send({
-    message:
-      statusCode === INTERNAL_SERVER_ERROR
-        ? "An error has occurred on the server"
-        : message,
-  });
-});
-
-app.listen(PORT, () => {
-  // eslint-disable-next-line no-console
-  console.log(`Listening on port ${PORT}`);
-});
+  .catch((err) => console.error("MongoDB connection error:", err));
