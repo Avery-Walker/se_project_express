@@ -67,6 +67,7 @@ const login = (req, res, next) => {
       const token = jwt.sign({ _id: user._id }, JWT_SECRET, {
         expiresIn: "7d",
       });
+
       res.send({ token });
     })
     .catch(() => {
@@ -74,7 +75,6 @@ const login = (req, res, next) => {
     });
 };
 
-// Update profile
 const updateProfile = (req, res, next) => {
   const { name, avatar } = req.body;
 
