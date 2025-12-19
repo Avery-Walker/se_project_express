@@ -30,9 +30,9 @@ const { PORT = 3001 } = process.env;
 mongoose
   .connect("mongodb://127.0.0.1:27017/wtwr_db")
   .then(() => {
-    console.log("Connected to MongoDB");
     app.listen(PORT, () => {
-      console.log(`Server is running on port ${PORT}`);
+      // eslint-disable-next-line no-console
+      console.info(`Server is running on port ${PORT}`);
     });
   })
   .catch((err) => console.error("MongoDB connection error:", err));

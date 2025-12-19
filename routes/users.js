@@ -1,27 +1,11 @@
-// routes/users.js
 const express = require("express");
-const {
-  getCurrentUser,
-  updateProfile,
-  createUser,
-  login,
-  getUser,
-} = require("../controllers/users");
-
-const {
-  validateUserBody,
-  validateLogin,
-  validateUserId,
-} = require("../middleware/validation");
+const { getCurrentUser, updateProfile } = require("../controllers/users");
+const auth = require("../middlewares/auth");
+const { validateUserUpdate } = require("../middlewares/validation");
 
 const router = express.Router();
 
-router.post("/signup", validateUserBody, createUser);
-router.post("/signin", validateLogin, login);
-
-router.get("/me", getCurrentUser);
-router.patch("/me", validateUserBody, updateProfile);
-
-router.get("/:userId", validateUserId, getUser);
+router.get("/me", auth, getCurrentUser);
+router.patch("/me", auth, validateUserUpdate, updateProfile);
 
 module.exports = router;

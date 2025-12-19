@@ -13,7 +13,7 @@ const {
 const {
   validateCardBody,
   validateItemId,
-} = require("../middleware/validation");
+} = require("../middlewares/validation");
 
 const router = express.Router();
 

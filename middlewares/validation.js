@@ -65,3 +65,10 @@ module.exports.validateItemId = celebrate({
     itemId: Joi.string().hex().length(24),
   }),
 });
+
+module.exports.validateUserUpdate = celebrate({
+  body: Joi.object({
+    name: Joi.string().min(2).max(30),
+    avatar: Joi.string().uri(),
+  }),
+});

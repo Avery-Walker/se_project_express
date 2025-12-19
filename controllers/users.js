@@ -23,18 +23,6 @@ const getCurrentUser = (req, res, next) => {
     });
 };
 
-const getUser = (req, res, next) => {
-  User.findById(req.params.userId)
-    .orFail(() => new NotFoundError("User not found"))
-    .then((user) => res.status(200).send(user))
-    .catch((err) => {
-      if (err.name === "CastError") {
-        return next(new BadRequestError("Invalid user ID format"));
-      }
-      return next(err);
-    });
-};
-
 const createUser = (req, res, next) => {
   const { name, avatar, email, password } = req.body;
 
@@ -62,16 +50,23 @@ const createUser = (req, res, next) => {
 const login = (req, res, next) => {
   const { email, password } = req.body;
 
+  if (!email || !password) {
+    return next(new BadRequestError("Email and password are required"));
+  }
+
   return User.findUserByCredentials(email, password)
     .then((user) => {
       const token = jwt.sign({ _id: user._id }, JWT_SECRET, {
         expiresIn: "7d",
       });
-
       res.send({ token });
     })
-    .catch(() => {
-      next(new UnauthorizedError("Incorrect email or password"));
+    .catch((err) => {
+      if (err.message === "Incorrect email or password") {
+        return next(new UnauthorizedError("Incorrect email or password"));
+      }
+
+      return next(err);
     });
 };
 
@@ -97,7 +92,6 @@ const updateProfile = (req, res, next) => {
 
 module.exports = {
   getCurrentUser,
-  getUser,
   createUser,
   login,
   updateProfile,

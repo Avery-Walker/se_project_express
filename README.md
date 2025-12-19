@@ -24,3 +24,8 @@ This project is used to create a back-end for the What to Wear app that we are d
 #### Technologies
 
 The technologies used to develop this project are: Express, Mongoose, Validator, ESLint, Nodemon.
+
+#### Domain Names
+	whattwr.chickenkiller.com
+  api.whattwr.chickenkiller.com
+  www.whattwr.chickenkiller.com
